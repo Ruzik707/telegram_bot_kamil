@@ -1,4 +1,3 @@
-
 ### **Для telegram_bot_kamil:**
 ```markdown
 # Telegram Bot for Business Automation
