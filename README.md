@@ -1,5 +1,3 @@
-### **Для telegram_bot_kamil:**
-
 # Telegram Bot for Business Automation
 
 ## 🤖 Описание
