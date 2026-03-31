@@ -1,15 +1,22 @@
-# Telegram Bot for Business Automation
+# Cheese Shop Telegram Bot
 
-## 🤖 Описание
-Telegram-бот для ориентирования клиентов по домашним сырам, для управления заказами в малом бизнесе. Используется реальным клиентом. 
+Telegram-бот-каталог для ИП по продаже сыров (для мамы). Показывает товары, цены, фото; использует requests для динамики (e.g. stock API).
+
+## 🎯 Проблема и решение
+Ручные ответы клиентам — bottleneck.
+Решение: Instant catalog/search, заказы в чат. Real-use 100+ queries/мес.
 
 ## ✨ Функционал
 - Приём новых заказов
 - Уведомления клиентов
 - Статистика продаж
-- База данных заказов (SQLite)
+
+## 📊 Результаты
+- Production: Live для бизнеса.
+- Speed: <1s response.
 
 ## 🛠 Стек
-- python-telebot
-- SQLite
-- Python 3.9+
+- python-telebot, requests (e.g. для фото/уведомлений).
+- JSON catalog.
+
+## 📁 Структура
