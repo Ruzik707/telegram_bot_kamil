@@ -1,9 +1,17 @@
 from text import *
 from keyboard import *
+import os
+import os
+from dotenv import load_dotenv
 
-token = '5689986363:AAGUuajnXodFoID7UswXLAMLASiIra4HnTE'
+load_dotenv()
 
-bot = telebot.TeleBot(token)
+TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+
+if TOKEN is None:
+    raise RuntimeError("TELEGRAM_BOT_TOKEN is not set")
+
+bot = telebot.TeleBot(TOKEN)
 bot.delete_webhook()
 
 @bot.message_handler(commands=['start'])
