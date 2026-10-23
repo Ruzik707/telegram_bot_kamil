@@ -1,8 +1,8 @@
 from text import *
 from keyboard import *
 import os
-import os
 from dotenv import load_dotenv
+from pathlib import Path
 
 load_dotenv()
 
@@ -13,6 +13,17 @@ if TOKEN is None:
 
 bot = telebot.TeleBot(TOKEN)
 bot.delete_webhook()
+
+
+
+def send_catalog_photo(chat_id, image_path, caption="", **kwargs):
+    """Show product text when local photographs are unavailable."""
+    path = Path(__file__).resolve().parent / image_path
+    if not path.is_file():
+        return bot.send_message(chat_id, caption or "Изображение пока недоступно.", **kwargs)
+    with path.open("rb") as image:
+        return bot.send_photo(chat_id, image, caption=caption, **kwargs)
+
 
 @bot.message_handler(commands=['start'])
 def start(message):
@@ -29,7 +40,7 @@ def reply(message):
     elif message.text == 'СЫРЫ 🧀':
         bot.send_message(message.chat.id, '<i>Про какой <b>сыр</b> хотите узнать сегодня?</i>', reply_markup=markup_cheese, parse_mode='html')
     elif message.text == 'Прайс-лист 🏷️':
-        bot.send_photo(message.chat.id, open('сыры фотки.local/all price-list.jpg', 'rb'), caption='<i>Можете ознакомиться с ценами</i>', parse_mode='html')
+        send_catalog_photo(message.chat.id, 'сыры фотки.local/all price-list.jpg', caption='<i>Можете ознакомиться с ценами</i>', parse_mode='html')
 
 @bot.callback_query_handler(func=lambda callback: True)
 def callback_message(callback):
@@ -37,61 +48,61 @@ def callback_message(callback):
     # if callback.data == 'Звони!':
     #     bot.send_contact(callback.message.chat.id, phone_number=NUMBER, first_name=NAME, last_name=SURNAME)
     if callback.data == 'Халлуми':
-        bot.send_photo(callback.message.chat.id, open('сыры фотки.local/халуми.jpg', 'rb'),
+        send_catalog_photo(callback.message.chat.id, 'сыры фотки.local/халуми.jpg',
                        caption=hallumi, reply_markup=markup_back_cheese, parse_mode='html')
     elif callback.data == 'Качотта':
-        bot.send_photo(callback.message.chat.id, open('сыры фотки.local/качотта.jpg', 'rb'),
+        send_catalog_photo(callback.message.chat.id, 'сыры фотки.local/качотта.jpg',
                        caption=cachotta, reply_markup=markup_back_cheese, parse_mode='html')
     # elif callback.data == 'Фета':
-    #     bot.send_photo(callback.message.chat.id, open('сыры фотки.local/фета.jpg', 'rb'),
+    #     send_catalog_photo(callback.message.chat.id, 'сыры фотки.local/фета.jpg',
     #                    caption=feta, reply_markup=markup_back_cheese, parse_mode='html')
     # elif callback.data == 'Адыгейский':
-    #     bot.send_photo(callback.message.chat.id, open('сыры фотки.local/адыгейский.jpg', 'rb'),
+    #     send_catalog_photo(callback.message.chat.id, 'сыры фотки.local/адыгейский.jpg',
     #                    caption=adigeiski, reply_markup=markup_back_cheese, parse_mode='html')
     elif callback.data == 'Чечил':
-        bot.send_photo(callback.message.chat.id, open('сыры фотки.local/чечил.jpg', 'rb'),
+        send_catalog_photo(callback.message.chat.id, 'сыры фотки.local/чечил.jpg',
                        caption=chechil, reply_markup=markup_back_cheese, parse_mode='html')
     elif callback.data == 'Шевр':
-        bot.send_photo(callback.message.chat.id, open('сыры фотки.local/шевр.jpg', 'rb'),
+        send_catalog_photo(callback.message.chat.id, 'сыры фотки.local/шевр.jpg',
                        caption=shevr, reply_markup=markup_back_cheese, parse_mode='html')
     # elif callback.data == 'Буррата':
-    #     bot.send_photo(callback.message.chat.id, open('сыры фотки.local/буррата.jpg', 'rb'),
+    #     send_catalog_photo(callback.message.chat.id, 'сыры фотки.local/буррата.jpg',
     #                    caption=buratta, reply_markup=markup_back_cheese, parse_mode='html')
     # elif callback.data == 'Моцарелла':
-    #     bot.send_photo(callback.message.chat.id, open('сыры фотки.local/моцарелла.jpg', 'rb'),
+    #     send_catalog_photo(callback.message.chat.id, 'сыры фотки.local/моцарелла.jpg',
     #                    caption=mocarella, reply_markup=markup_back_cheese, parse_mode='html')
     elif callback.data == 'Полная тарелка':
-        bot.send_photo(callback.message.chat.id, open('сыры фотки.local/полная сырная тарелка.jpg', 'rb'),
+        send_catalog_photo(callback.message.chat.id, 'сыры фотки.local/полная сырная тарелка.jpg',
                        caption=full_cheese_plate, reply_markup=markup_back_cheese, parse_mode='html')
     elif callback.data == 'Пробная тарелка':
-        bot.send_photo(callback.message.chat.id, open('сыры фотки.local/пробная сырная тарелка.jpg', 'rb'),
+        send_catalog_photo(callback.message.chat.id, 'сыры фотки.local/пробная сырная тарелка.jpg',
                        caption=prob_cheese_plate, reply_markup=markup_back_cheese, parse_mode='html')
     elif callback.data == 'Панир':
-        bot.send_photo(callback.message.chat.id, open('сыры фотки.local/панир.jpg', 'rb'),
+        send_catalog_photo(callback.message.chat.id, 'сыры фотки.local/панир.jpg',
                        caption=panir, reply_markup=markup_back_cheese, parse_mode='html')
     elif callback.data == 'Сулугуни':
-        bot.send_photo(callback.message.chat.id, open('сыры фотки.local/сулугуни.jpg', 'rb'),
+        send_catalog_photo(callback.message.chat.id, 'сыры фотки.local/сулугуни.jpg',
                        caption=suluguni, reply_markup=markup_back_cheese, parse_mode='html')
     # elif callback.data == 'Фета в масле':
-    #     bot.send_photo(callback.message.chat.id, open('сыры фотки.local/.jpg', 'rb'),
+    #     send_catalog_photo(callback.message.chat.id, 'сыры фотки.local/.jpg',
     #     caption=feta_maslo, reply_markup=markup_back_cheese, parse_mode='html')
     elif callback.data == 'Шевр масло':
-        bot.send_photo(callback.message.chat.id, open('сыры фотки.local/шевр в масле.jpg', 'rb'),
+        send_catalog_photo(callback.message.chat.id, 'сыры фотки.local/шевр в масле.jpg',
                        caption=shevr_maslo, reply_markup=markup_back_cheese, parse_mode='html')
     elif callback.data == 'Монтазио':
-        bot.send_photo(callback.message.chat.id, open('сыры фотки.local/монтазио.jpg', 'rb'),
+        send_catalog_photo(callback.message.chat.id, 'сыры фотки.local/монтазио.jpg',
                        caption=montazio, reply_markup=markup_back_cheese, parse_mode='html')
     elif callback.data == 'Песто':
-        bot.send_photo(callback.message.chat.id, open('сыры фотки.local/песто.jpg', 'rb'),
+        send_catalog_photo(callback.message.chat.id, 'сыры фотки.local/песто.jpg',
                        caption=pesto, reply_markup=markup_back_cheese, parse_mode='html')
     elif callback.data == 'Качоковалло':
-        bot.send_photo(callback.message.chat.id, open('сыры фотки.local/качоковалло.jpg', 'rb'),
+        send_catalog_photo(callback.message.chat.id, 'сыры фотки.local/качоковалло.jpg',
                        caption=cachocavallo, reply_markup=markup_back_cheese, parse_mode='html')
     elif callback.data == 'Канестрато':
-        bot.send_photo(callback.message.chat.id, open('сыры фотки.local/канестрато.jpg', 'rb'),
+        send_catalog_photo(callback.message.chat.id, 'сыры фотки.local/канестрато.jpg',
                        caption=canestrato, reply_markup=markup_back_cheese, parse_mode='html')
     elif callback.data == 'Гауда':
-        bot.send_photo(callback.message.chat.id, open('сыры фотки.local/гауда.jpg', 'rb'),
+        send_catalog_photo(callback.message.chat.id, 'сыры фотки.local/гауда.jpg',
                        caption=gauda, reply_markup=markup_back_cheese, parse_mode='html')
     elif callback.data == 'Назад к сырам':
         bot.send_message(callback.message.chat.id, choice(back_chesse_answer), reply_markup=markup_cheese, parse_mode='html')
